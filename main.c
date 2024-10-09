@@ -7,6 +7,7 @@ void uart_send(uint8_t data);
 void GPIO_PORT_F_init(void);
 
 
+
 uint8_t uart_receive();
 
 void GPIO_PORT_F_init(void)
@@ -71,7 +72,7 @@ int main(void)
     while(1)
     {
 
-
+     //Do nothing
 
     }
 }

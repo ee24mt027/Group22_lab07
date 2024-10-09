@@ -64,35 +64,40 @@ uint8_t uart_receive()
 
 int main(void)
 {
-    uint8_t received_data;
-    int i;
 
     GPIO_PORT_F_init();
     uart_init();
 
     while(1)
     {
-        uart_send(0xAA);
-        received_data = uart_receive();
-        uart_send(0x12);
-        received_data = uart_receive();
-        for(i = 0; i < 1000000; i++);
+
+
+
     }
 }
 
 
 void Portf_interrupt_handler(void)            // Interrupt handler for GPIO Port F
 {
+    uint8_t received_data;
+      int i;
+
 
     if (GPIO_PORTF_RIS_R & 0x10)             // CHECK IF SWITCH 1 CAUSED INTERRUPT
     {
-    GPIO_PORTF_DATA_R |= (1<<1) | (0<<3);
+    uart_send(0xAA);
+    received_data = uart_receive();
     GPIO_PORTF_ICR_R = 0x10;                 // CLEAR INTERRUPT FLAG FOR SWITCH 1
+
+
     }
 
     if (GPIO_PORTF_RIS_R & 0x01)             // CHECK IF SWITCH 2 CAUSED INTERRUPT
     {
-    GPIO_PORTF_DATA_R |= (1<<3) | (0<<1);               // TOGGLE RED LED
+    uart_send(0x12);
+    received_data = uart_receive();
+    //GPIO_PORTF_DATA_R |= (1<<3) | (0<<1);               // TOGGLE RED LED
     GPIO_PORTF_ICR_R = 0x01;                 // CLEAR INTERRUPT FLAG FOR SWITCH 1
     }
+    for(i = 0; i < 1000000; i++);
 }
